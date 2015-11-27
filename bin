@@ -1,0 +1,120 @@
+-- bitWiseAPI by ZXCi
+-- byte2binary(byte) - converts a byte to 8 binary, input a byte
+-- binary2byte(binary) -- converts 8 binary to byte, input 8 binary
+-- string2bytes(string) -- converts a string array of bytes, input string
+-- string2binary(string) -- converts string into binary
+-- bytes2stringArr(byteArr) -- convers array of bytes to array of string, input byte array
+-- binary2string(binary) -- convert binary to string (for multiples of 8 binary)
+function byte2binary(byte) -- converts a single byte to bitform
+	local binary = {}
+	if (byte - 128) >= 0 then
+		binary[0] = 1
+		byte = byte - 128
+	else
+		binary[0] = 0
+	end
+
+	if (byte - 64) >= 0 then
+		binary[1] = 1
+		byte = byte - 64
+	else
+		binary[1] = 0
+	end
+
+	if (byte - 32) >= 0 then
+		binary[2] = 1
+		byte = byte - 32
+	else
+		binary[2] = 0
+	end
+
+	if (byte - 16) >= 0 then
+		binary[3] = 1
+		byte = byte - 16
+	else
+		binary[3] = 0
+	end
+
+	if (byte - 8) >= 0 then
+		binary[4] = 1
+		byte = byte - 8
+	else
+		binary[4] = 0
+	end
+
+	if (byte - 4) >= 0 then
+		binary[5] = 1
+		byte = byte - 4
+	else
+		binary[5] = 0
+	end
+
+	if (byte - 2) >= 0 then
+		binary[6] = 1
+		byte = byte - 2
+	else
+		binary[6] = 0
+	end
+
+	if (byte - 1) >= 0 then
+		binary[7] = 1
+	else
+		binary[7] = 0
+	end -- takes string(byte), returns string(bin)
+	return table.concat(binary,"",0)
+end
+function binary2byte(binary) -- converts 8 binary to byteform
+	local binArr = {} -- 
+	for i = 1, #binary do -- 
+ 	   local c = tonumber(binary:sub(i,i))
+ 	   binArr[(i-1)] = c
+	end
+	local byte = 0
+	byte = (binArr[0] * 128) + byte
+	byte = (binArr[1] * 64) + byte
+	byte = (binArr[2] * 32) + byte
+	byte = (binArr[3] * 16) + byte
+	byte = (binArr[4] * 8) + byte
+	byte = (binArr[5] * 4) + byte
+	byte = (binArr[6] * 2) + byte
+	byte = (binArr[7] * 1) + byte
+	return byte
+end
+function string2bytes(string) -- converts string to byteform array
+	local byteArr = {}
+	for i = 1, #string do -- iterates through string
+ 	   local c = string:sub(i,i)
+ 	   c = string.byte(c)
+ 	   byteArr[(i-1)] = c
+	end
+	return byteArr
+end
+function string2binary(string) -- converts string to binary
+	local binArr = {}
+	binArr = string2bytes(string)
+	for i=0,#binArr do
+		binArr[i] = byte2binary(binArr[i])
+	end
+	return table.concat(binArr,"",0)
+end
+function bytes2stringArr(byteArr) -- converts array of bytes to array of strings
+	for i=0,#byteArr do
+		byteArr[i] = string.char(byteArr[i])
+	end
+	return byteArr
+end
+function binary2string(binString) -- converts complete binary string to ascii string
+	local binArr = {}
+	local byte = "" 
+	for i = 1, #binString do -- iterates through string
+ 		local c = binString:sub(i,i)
+ 	    byte = byte .. c
+ 	    if (i % 8) == 0 then
+ 	    	byte = binary2byte(byte)
+ 	    	binArr[((i/8)-1)] = byte
+ 	    	byte = ""
+ 	    end
+	end
+	binArr = bytes2stringArr(binArr)
+	return table.concat(binArr,"",0)
+end
