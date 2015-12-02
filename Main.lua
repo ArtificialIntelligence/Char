@@ -3,7 +3,7 @@
 	Author: Wassil Janssen
 	Description: Test how proficient the network is.
 ]]--
-
+term.redirect(term.native())
 os.loadAPI("CC/AI.lua")
 os.loadAPI("Char/bin")
 local AI = _G["AI.lua"]
@@ -56,26 +56,30 @@ while true do
 			end
 		end
 	end
-	print(textutils.serialize(input2d))
 	for i,v in pairs(input2d) do
 		for k,m in pairs(v) do
+			print(m)
+			read()
 			input[count] = m
 			count = count+1
 		end
 	end
-	print(#input)
+	print("res")
 	myNet.feedForward(input)
 	local results = myNet.getResults()
 	print(textutils.serialize(results))
+	read()
 	local str = ""
 	for i,v in pairs(results) do
 		str = str..tostring(round(v))
 		print(v," ",round(v))
+		read()
 	end
 	print(str)
+	read()
 	str = bin.binary2byte(str)
 	term.setCursorPos(1,7)
 	print(string.char(str))
 	print(string.byte(str))
-	os.pullEvent()
+	read()
 end
